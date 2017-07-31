@@ -1,5 +1,3 @@
-'use strict';
-
 let path = require('path');
 let webpack = require('webpack');
 let baseConfig = require('./base');
@@ -10,9 +8,9 @@ let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: [
-    'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    `webpack-dev-server/client?http://127.0.0.1:${defaultSettings.port}`,
     'webpack/hot/only-dev-server',
-    './src/index'
+    './src/index',
   ],
   cache: true,
   devtool: 'eval-source-map',
@@ -21,7 +19,7 @@ let config = Object.assign({}, baseConfig, {
     new webpack.NoErrorsPlugin(),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
-    })
+    }),
   ],
   module: defaultSettings.getDefaultModules()
 });
@@ -30,10 +28,10 @@ let config = Object.assign({}, baseConfig, {
 config.module.loaders.push({
   test: /\.(js|jsx)$/,
   loader: 'react-hot!babel-loader',
-  include: [].concat(
-    config.additionalPaths,
-    [ path.join(__dirname, '/../src') ]
-  )
+  include: [].concat(config.additionalPaths, [path.join(__dirname, '/../src')]),
+  use: {
+    loader: 'eslint-loader',
+  },
 });
 
 module.exports = config;
